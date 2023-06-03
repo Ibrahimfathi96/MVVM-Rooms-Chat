@@ -163,7 +163,10 @@ class _SignInViewState extends State<SignInView> {
                   child: const Text(
                     "Or Create My Account ?",
                     textAlign: TextAlign.end,
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.blue,
+                    ),
                   ),
                 ),
               ],
