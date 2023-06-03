@@ -29,6 +29,13 @@
             {
               "client_id": "137787904263-eojkmf0org65a8m46h1a5rch8iaksoe0.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "137787904263-8lj0t59medt71jcam7pdvf314e90thql.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.IBMF.roomsChat.RunnerTests"
+              }
             }
           ]
         }

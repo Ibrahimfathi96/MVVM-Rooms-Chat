@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:rooms_chat/core/functions/dialog_utils.dart';
 import 'package:rooms_chat/core/functions/validation_utils.dart';
 import 'package:rooms_chat/generated/assets.dart';
+import 'package:rooms_chat/view/Auth/sign_up_view.dart';
 
-class SignUpView extends StatefulWidget {
-  static const String routeName = 'sign-up';
+class SignInView extends StatefulWidget {
+  static const String routeName = 'sign-in';
 
-  const SignUpView({super.key});
+  const SignInView({super.key});
 
   @override
-  State<SignUpView> createState() => _SignUpViewState();
+  State<SignInView> createState() => _SignInViewState();
 }
 
-class _SignUpViewState extends State<SignUpView> {
+class _SignInViewState extends State<SignInView> {
   bool obscurePassword = true;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -39,7 +39,7 @@ class _SignUpViewState extends State<SignUpView> {
           elevation: 0,
           centerTitle: true,
           title: const Text(
-            "Create Account",
+            "Login",
           ),
         ),
         body: Container(
@@ -52,17 +52,16 @@ class _SignUpViewState extends State<SignUpView> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.25,
                 ),
-                TextFormField(
-                  controller: fullNameController,
-                  validator: (text) {
-                    if (text == null || text.trim().isEmpty) {
-                      return "Please Enter Your Full Name";
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: "Full Name",
+                const Text(
+                  "Welcome Back!",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.black,
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 TextFormField(
                   controller: emailController,
@@ -110,7 +109,21 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 15,
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: const Text(
+                    "Forget Password ?",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -121,19 +134,16 @@ class _SignUpViewState extends State<SignUpView> {
                     elevation: 6,
                   ),
                   onPressed: () {
-                    createAccount();
+                    signIn();
                   },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Create Account",
+                        "Sign-In",
                         style: TextStyle(
                           fontSize: 18,
                         ),
-                      ),
-                      SizedBox(
-                        width: 30,
                       ),
                       Icon(
                         Icons.arrow_forward,
@@ -144,31 +154,17 @@ class _SignUpViewState extends State<SignUpView> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Already have an account?  ",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        emailController.clear();
-                        fullNameController.clear();
-                        passwordController.clear();
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    emailController.clear();
+                    passwordController.clear();
+                    Navigator.of(context).pushNamed(SignUpView.routeName);
+                  },
+                  child: const Text(
+                    "Or Create My Account ?",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  ),
                 ),
               ],
             ),
@@ -180,13 +176,13 @@ class _SignUpViewState extends State<SignUpView> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  void createAccount() {
+  void signIn() {
     if (!formKey.currentState!.validate()) {
       return;
     }
     showLoading(context, "Loading....");
     auth
-        .createUserWithEmailAndPassword(
+        .signInWithEmailAndPassword(
       email: emailController.text,
       password: passwordController.text,
     )
