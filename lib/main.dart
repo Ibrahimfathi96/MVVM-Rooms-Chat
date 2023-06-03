@@ -1,6 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:rooms_chat/firebase_options.dart';
+import 'package:rooms_chat/view/Auth/sign_up_view.dart';
 
-void main() {
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const RoomsChat());
 }
 
@@ -10,11 +17,11 @@ class RoomsChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Rooms Chat',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      debugShowCheckedModeBanner: false,
+      initialRoute: SignUpView.routeName,
+      routes: {
+         SignUpView.routeName : (_)=>const SignUpView(),
+      },
     );
   }
 }

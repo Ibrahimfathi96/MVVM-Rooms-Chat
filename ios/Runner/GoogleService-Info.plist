@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>137787904263-a1mka0c2cdufar86sl6h2cuol763jske.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.137787904263-a1mka0c2cdufar86sl6h2cuol763jske</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDjbOT4P2YXErskU3hNbKiwFEcydPaSDOo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>137787904263</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.IBMF.roomsChat</string>
+	<key>PROJECT_ID</key>
+	<string>roomschatapp-22ed8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>roomschatapp-22ed8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:137787904263:ios:7599f14ea683bec3d635a2</string>
+</dict>
+</plist>

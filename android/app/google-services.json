@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "137787904263",
+    "project_id": "roomschatapp-22ed8",
+    "storage_bucket": "roomschatapp-22ed8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137787904263:android:3ed73338fe3e563ad635a2",
+        "android_client_info": {
+          "package_name": "com.IBMF.rooms_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137787904263-eojkmf0org65a8m46h1a5rch8iaksoe0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZEv7pLIZztvJPc-_AELBQMNEzFIKGWr8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137787904263-eojkmf0org65a8m46h1a5rch8iaksoe0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
