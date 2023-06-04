@@ -1,5 +1,5 @@
 name: rooms_chat
-description: Rooms Chat Android Application
+description: Rooms Chat Android Application With MVVM Pattern Using Provider as State management
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -15,6 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.5
   firebase_core: ^2.13.1
   firebase_auth: ^4.6.2
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
