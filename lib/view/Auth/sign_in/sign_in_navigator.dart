@@ -1,3 +1,5 @@
 import 'package:rooms_chat/base/base.dart';
 
-abstract class SignInNavigator extends BaseNavigator{}
+abstract class SignInNavigator extends BaseNavigator{
+  goToHome();
+}

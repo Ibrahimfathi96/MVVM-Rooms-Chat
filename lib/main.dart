@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rooms_chat/firebase_options.dart';
 import 'package:rooms_chat/view/Auth/sign_in/sign_in_view.dart';
 import 'package:rooms_chat/view/Auth/sign_up/sign_up_view.dart';
+import 'package:rooms_chat/view/home/home_view.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,7 @@ class RoomsChat extends StatelessWidget {
       routes: {
          SignUpView.routeName : (_)=>const SignUpView(),
          SignInView.routeName : (_)=>const SignInView(),
+         HomeView.routeName   : (_)=>const HomeView(),
       },
     );
   }

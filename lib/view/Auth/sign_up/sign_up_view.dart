@@ -5,6 +5,7 @@ import 'package:rooms_chat/core/functions/validation_utils.dart';
 import 'package:rooms_chat/generated/assets.dart';
 import 'package:rooms_chat/view/Auth/sign_up/sign_up_navigator.dart';
 import 'package:rooms_chat/view/Auth/sign_up/sign_up_viewmodel.dart';
+import 'package:rooms_chat/view/home/home_view.dart';
 
 class SignUpView extends StatefulWidget {
   static const String routeName = 'sign-up';
@@ -182,5 +183,10 @@ class _SignUpViewState extends BaseState<SignUpView, SignUpViewModel>
         ),
       ),
     );
+  }
+
+  @override
+  goToHome() {
+    Navigator.pushReplacementNamed(context, HomeView.routeName);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rooms_chat/base/base.dart';
+import 'package:rooms_chat/data/database/my_database.dart';
+import 'package:rooms_chat/data/shared_data.dart';
 import 'package:rooms_chat/view/Auth/sign_in/sign_in_navigator.dart';
 
 class SignInViewModel extends BaseViewModel<SignInNavigator> {
@@ -23,9 +25,14 @@ class SignInViewModel extends BaseViewModel<SignInNavigator> {
       navigator?.showLoadingDialog();
       var credential = await authServices.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
+      var retrievedUser = await MyDatabase.getUserById(credential.user?.uid ?? '');
       navigator?.hideLoadingDialog();
-      //show user id or in future navigate
-      navigator?.showMessageDialog(credential.user?.uid ?? '');
+      if(retrievedUser == null){
+        navigator?.showMessageDialog("something went wrong with your email or password");
+      }else{
+        SharedData.user = retrievedUser;
+        navigator?.goToHome();
+      }
     } on FirebaseAuthException catch (e) {
       navigator?.hideLoadingDialog();
       if (e.code == 'user-not-found') {
