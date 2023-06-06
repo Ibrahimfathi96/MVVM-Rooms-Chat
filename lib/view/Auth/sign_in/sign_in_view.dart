@@ -24,6 +24,10 @@ class _SignInViewState extends BaseState<SignInView,SignInViewModel> implements 
   }
 
   @override
+  goToHome() {
+    Navigator.pushReplacementNamed(context, HomeView.routeName);
+  }
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => viewModel,
@@ -31,7 +35,7 @@ class _SignInViewState extends BaseState<SignInView,SignInViewModel> implements 
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              Assets.imagesSignUp,
+              Assets.imagesBgPattern,
             ),
             fit: BoxFit.fill,
           ),
@@ -181,10 +185,5 @@ class _SignInViewState extends BaseState<SignInView,SignInViewModel> implements 
         ),
       ),
     );
-  }
-
-  @override
-  goToHome() {
-    Navigator.pushReplacementNamed(context, HomeView.routeName);
   }
 }

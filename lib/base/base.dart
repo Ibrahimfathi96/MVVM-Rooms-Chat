@@ -7,7 +7,12 @@ abstract class BaseNavigator {
 
   void hideLoadingDialog();
 
-  void showMessageDialog(String message);
+  void showMessageDialog(String message,
+      {String? posActionName,
+      String? negActionName,
+      VoidCallback? posAction,
+      VoidCallback? negAction,
+      bool? isCancelable = true});
 }
 
 class BaseViewModel<Nav extends BaseNavigator> extends ChangeNotifier {
@@ -15,14 +20,16 @@ class BaseViewModel<Nav extends BaseNavigator> extends ChangeNotifier {
 }
 
 abstract class BaseState<T extends StatefulWidget, VM extends BaseViewModel>
-    extends State<T> implements BaseNavigator{
+    extends State<T> implements BaseNavigator {
   late VM viewModel;
+
   @override
   void initState() {
     super.initState();
     viewModel = initViewModel();
     viewModel.navigator = this;
   }
+
   VM initViewModel();
 
   @override
@@ -36,7 +43,17 @@ abstract class BaseState<T extends StatefulWidget, VM extends BaseViewModel>
   }
 
   @override
-  void showMessageDialog(String message) {
-    MyDialogUtils.showMessage(context, message);
+  void showMessageDialog(String message,
+      {String? posActionName,
+      String? negActionName,
+      VoidCallback? posAction,
+      VoidCallback? negAction,
+      bool? isCancelable = true}) {
+    MyDialogUtils.showMessage(context, message,
+        posAction: posAction,
+        posActionName: posActionName,
+        negAction: negAction,
+        negActionName: negActionName,
+        isCancelable: isCancelable);
   }
 }

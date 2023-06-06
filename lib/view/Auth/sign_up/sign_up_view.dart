@@ -32,7 +32,7 @@ class _SignUpViewState extends BaseState<SignUpView, SignUpViewModel>
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              Assets.imagesSignUp,
+              Assets.imagesBgPattern,
             ),
             fit: BoxFit.fill,
           ),

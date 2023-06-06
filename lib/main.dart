@@ -5,6 +5,8 @@ import 'package:rooms_chat/view/Auth/sign_in/sign_in_view.dart';
 import 'package:rooms_chat/view/Auth/sign_up/sign_up_view.dart';
 import 'package:rooms_chat/view/home/home_view.dart';
 
+import 'view/add_room/add_room_view.dart';
+
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -20,11 +22,12 @@ class RoomsChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: SignInView.routeName,
+      initialRoute: AddRoomView.routeName,
       routes: {
-         SignUpView.routeName : (_)=>const SignUpView(),
-         SignInView.routeName : (_)=>const SignInView(),
-         HomeView.routeName   : (_)=>const HomeView(),
+         SignUpView.routeName    : (_)=>const SignUpView(),
+         SignInView.routeName    : (_)=>const SignInView(),
+         HomeView.routeName      : (_)=>const HomeView(),
+         AddRoomView.routeName   : (_)=>const AddRoomView(),
       },
     );
   }

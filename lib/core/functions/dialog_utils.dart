@@ -4,7 +4,7 @@ class MyDialogUtils{
   static void showMessage(BuildContext context, String message,{
     String? posActionName,VoidCallback? posAction,
     String? negActionName,VoidCallback? negAction,
-    bool isCancelable = true}) {
+    bool? isCancelable = true}) {
     List<Widget> actions = [];
     if(posActionName!=null){
       actions.add(TextButton(onPressed: (){
@@ -31,7 +31,7 @@ class MyDialogUtils{
             content: Text(message,style: Theme.of(context).textTheme.bodyLarge,),
             actions: actions,
           );
-        },barrierDismissible: isCancelable);
+        },barrierDismissible: isCancelable!);
   }
 
 
