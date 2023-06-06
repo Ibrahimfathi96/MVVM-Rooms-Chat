@@ -1,5 +1,5 @@
 class RoomMD {
-  static const String collectionName = 'room-collection';
+  static const String collectionName = 'Rooms Collections';
   String? id;
   String title;
   String description;

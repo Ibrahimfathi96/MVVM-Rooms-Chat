@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rooms_chat/firebase_options.dart';
 import 'package:rooms_chat/view/Auth/sign_in/sign_in_view.dart';
 import 'package:rooms_chat/view/Auth/sign_up/sign_up_view.dart';
+import 'package:rooms_chat/view/chat_starting_page/chat_starting_view.dart';
+import 'package:rooms_chat/view/chat_thread/chat_thread_view.dart';
 import 'package:rooms_chat/view/home/home_view.dart';
 
 import 'view/add_room/add_room_view.dart';
@@ -22,12 +24,14 @@ class RoomsChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AddRoomView.routeName,
+      initialRoute: SignInView.routeName,
       routes: {
-         SignUpView.routeName    : (_)=>const SignUpView(),
-         SignInView.routeName    : (_)=>const SignInView(),
-         HomeView.routeName      : (_)=>const HomeView(),
-         AddRoomView.routeName   : (_)=>const AddRoomView(),
+         SignUpView.routeName       : (_)=> const SignUpView(),
+         SignInView.routeName       : (_)=> const SignInView(),
+         HomeView.routeName         : (_)=> const HomeView(),
+         AddRoomView.routeName      : (_)=> const AddRoomView(),
+         ChatStartingView.routeName : (_)=> const ChatStartingView(),
+         ChatThreadView.routeName   : (_)=> const ChatThreadView(),
       },
     );
   }

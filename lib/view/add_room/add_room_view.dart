@@ -22,10 +22,12 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
   void goBack() {
     Navigator.pushReplacementNamed(context, HomeView.routeName);
   }
+
   @override
   AddRoomViewModel initViewModel() {
     return AddRoomViewModel();
   }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -48,12 +50,14 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
             title: const Text("Add New Room"),
           ),
           body: Padding(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             child: SizedBox(
-              height: MediaQuery.of(context).size.height  * 0.7,
+              height: MediaQuery.of(context).size.height * 0.7,
               child: Card(
-                margin: const EdgeInsets.only(top: 80,right: 22,left: 22),
-                elevation: 8,
+                margin: const EdgeInsets.only(top: 80, right: 22, left: 22),
+                elevation: 16,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -65,15 +69,15 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
                       children: [
                         const Text(
                           "Create New Room",
-                          style:
-                              TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                         Image.asset(Assets.imagesAddRoom),
                         TextFormField(
                           controller: viewModel.titleController,
-                          validator: (text){
-                            if(text == null || text.trim().isEmpty){
+                          validator: (text) {
+                            if (text == null || text.trim().isEmpty) {
                               return "Please Enter room title";
                             }
                             return null;
@@ -85,52 +89,69 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
                         const SizedBox(
                           height: 10,
                         ),
-                        DropdownButton<RoomCategoryMD>(
-                          isExpanded: true,
-                          borderRadius: BorderRadius.circular(16),
-                          underline: const SizedBox(),
-                          itemHeight: 70,
-                          alignment: Alignment.center,
-                          value: viewModel.selectedRoom,
-                          items: viewModel.allCategories
-                              .map(
-                                (category) => DropdownMenuItem<RoomCategoryMD>(
-                                  value: category,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/${category.roomImage}',
-                                        height: 48,
-                                        width: 48,
-                                      ),
-                                      const SizedBox(
-                                        width: 16,
-                                      ),
-                                      Text(
-                                        category.roomName,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16,
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black54,
+                              style: BorderStyle.solid,
+                              width: 0.80,
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: DropdownButton<RoomCategoryMD>(
+                            isExpanded: true,
+                            borderRadius: BorderRadius.circular(4),
+                            itemHeight: 50,
+                            underline: const SizedBox(),
+                            alignment: Alignment.center,
+                            value: viewModel.selectedRoom,
+                            items: viewModel.allCategories
+                                .map(
+                                  (category) =>
+                                      DropdownMenuItem<RoomCategoryMD>(
+                                    value: category,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/${category.roomImage}',
+                                          height: 48,
+                                          width: 48,
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(
+                                          width: 16,
+                                        ),
+                                        Text(
+                                          category.roomName,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (item) {
-                            if (item == null) return;
-                            viewModel.selectedRoom = item;
-                            setState(() {});
-                          },
+                                )
+                                .toList(),
+                            onChanged: (item) {
+                              if (item == null) return;
+                              viewModel.selectedRoom = item;
+                              setState(() {});
+                            },
+                          ),
                         ),
                         TextFormField(
                           minLines: 1,
                           maxLines: 4,
                           controller: viewModel.descriptionController,
-                          validator: (text){
-                            if(text == null || text.trim().isEmpty){
+                          validator: (text) {
+                            if (text == null || text.trim().isEmpty) {
                               return "Please Enter room description";
                             }
                             return null;
@@ -144,18 +165,18 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                            elevation: 6,
-                            padding: const EdgeInsets.all(14)
-                          ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              elevation: 6,
+                              padding: const EdgeInsets.all(14)),
                           onPressed: () {
                             viewModel.createRoom();
                           },
                           child: const Text(
                             "Create",
-                            style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
                           ),
                         ),
                       ],
