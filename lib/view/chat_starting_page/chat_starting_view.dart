@@ -36,6 +36,7 @@ class _ChatStartingViewState
         ),
       ),
       child: Scaffold(
+        resizeToAvoidBottomInset:false ,
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           actions: [

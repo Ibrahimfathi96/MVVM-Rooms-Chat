@@ -10,13 +10,13 @@ class CustomRoomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.pushReplacementNamed(context, ChatStartingView.routeName,arguments: roomMD);
+      onTap: () {
+        Navigator.pushReplacementNamed(context, ChatStartingView.routeName,
+            arguments: roomMD);
       },
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16)
-        ),
+            borderRadius: BorderRadius.circular(16)),
         elevation: 14,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -33,13 +33,12 @@ class CustomRoomWidget extends StatelessWidget {
                 overflow: TextOverflow.fade,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 18,fontWeight: FontWeight.w500
-                ),
+                    fontSize: 18, fontWeight: FontWeight.w500),
               ),
             ),
           ],
         ),
-      ),
+      )
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rooms_chat/base/base.dart';
+import 'package:rooms_chat/data/database/my_database.dart';
 import 'package:rooms_chat/data/model/room_model.dart';
 import 'package:rooms_chat/generated/assets.dart';
 import 'package:rooms_chat/view/chat_thread/chat_thread_navigator.dart';
@@ -194,6 +195,60 @@ class _ChatThreadViewState
       items: [
         PopupMenuItem<String>(
           value: '1',
+          child: GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text(
+                      'Delete Room',
+                      textAlign: TextAlign.center,
+                    ),
+                    content: const Text(
+                      'Are you sure you want to delete the room?',
+                      textAlign: TextAlign.center,
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text(
+                          'delete Room',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onPressed: () {
+                          MyDatabase.deleteRoom(viewModel.roomMD);
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            HomeView.routeName,
+                                (Route<dynamic> route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: const Center(
+              child: Text(
+                'Delete Room',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: '2',
           child: GestureDetector(
             onTap: () {
               showDialog(

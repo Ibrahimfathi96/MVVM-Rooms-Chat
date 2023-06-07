@@ -67,4 +67,9 @@ class MyDatabase {
     message.messageId = messageDocument.id;
     return messageDocument.set(message);
   }
+
+  static Future<void> deleteRoom(RoomMD roomMD) {
+    var roomDoc = getRoomsCollection().doc(roomMD.id);
+    return roomDoc.delete();
+  }
 }
