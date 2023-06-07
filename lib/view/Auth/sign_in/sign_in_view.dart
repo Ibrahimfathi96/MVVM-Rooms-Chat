@@ -29,6 +29,7 @@ class _SignInViewState extends BaseState<SignInView,SignInViewModel> implements 
   }
   @override
   Widget build(BuildContext context) {
+    viewModel.checkLoggedInUser();
     return ChangeNotifierProvider(
       create: (context) => viewModel,
       child: Container(

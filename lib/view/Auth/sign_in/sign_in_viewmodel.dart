@@ -12,7 +12,6 @@ class SignInViewModel extends BaseViewModel<SignInNavigator> {
   TextEditingController passwordController = TextEditingController();
   bool obscurePassword = true;
 
-
   validateUserInput() {
     if (!formKey.currentState!.validate()) {
       return;
@@ -25,11 +24,13 @@ class SignInViewModel extends BaseViewModel<SignInNavigator> {
       navigator?.showLoadingDialog();
       var credential = await authServices.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-      var retrievedUser = await MyDatabase.getUserById(credential.user?.uid ?? '');
+      var retrievedUser =
+          await MyDatabase.getUserById(credential.user?.uid ?? '');
       navigator?.hideLoadingDialog();
-      if(retrievedUser == null){
-        navigator?.showMessageDialog("something went wrong with your email or password");
-      }else{
+      if (retrievedUser == null) {
+        navigator?.showMessageDialog(
+            "something went wrong with your email or password");
+      } else {
         SharedData.user = retrievedUser;
         navigator?.goToHome();
       }
@@ -43,6 +44,14 @@ class SignInViewModel extends BaseViewModel<SignInNavigator> {
     } catch (e) {
       navigator?.showMessageDialog(
           "something went wrong, please try again later,\n${e.toString()}");
+    }
+  }
+
+  void checkLoggedInUser() async {
+    if (authServices.currentUser != null) {
+      var retrievedUser =
+          await MyDatabase.getUserById(authServices.currentUser?.uid ?? '');
+      navigator?.goToHome();
     }
   }
 }

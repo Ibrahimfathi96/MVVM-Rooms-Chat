@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rooms_chat/base/base.dart';
 import 'package:rooms_chat/data/database/my_database.dart';
@@ -10,7 +11,18 @@ class ChatThreadViewModel extends BaseViewModel<ChatThreadNavigator> {
   late RoomMD roomMD;
   TextEditingController messageController = TextEditingController();
 
+  leaveRoom(){}
+  Stream<QuerySnapshot<UserMessage>> getMessagesFromDB() {
+    return MyDatabase.getUserMessagesCollection(roomMD.id!)
+    //sorting messages by time
+        .orderBy(
+          'dateTime',descending: true
+        )
+        .snapshots();
+  }
+
   void sendMessage() {
+    if(messageController.text.trim().isEmpty) return;
     UserMessage userMessage = UserMessage(
       content: messageController.text,
       dateTime: DateTime.now().millisecondsSinceEpoch,

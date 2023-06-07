@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rooms_chat/data/model/room_model.dart';
+import 'package:rooms_chat/data/shared_data.dart';
 import 'package:rooms_chat/generated/assets.dart';
+import 'package:rooms_chat/view/Auth/sign_in/sign_in_view.dart';
 import 'package:rooms_chat/view/add_room/add_room_view.dart';
 import 'package:rooms_chat/view/home/home_navigator.dart';
 import 'package:rooms_chat/view/home/home_viewmodel.dart';
@@ -41,6 +44,19 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel>
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
+            actions: [
+              IconButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  SharedData.user = null;
+                  Navigator.pushReplacementNamed(context, SignInView.routeName);
+                },
+                icon: const Icon(
+                  Icons.logout_outlined,
+                  size: 36,
+                ),
+              ),
+            ],
             leading: const SizedBox(),
             centerTitle: true,
             elevation: 0,
@@ -60,6 +76,7 @@ class _HomeViewState extends BaseState<HomeView, HomeViewModel>
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return GridView.builder(
+                          physics: const BouncingScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(

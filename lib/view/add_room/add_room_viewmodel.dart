@@ -12,14 +12,15 @@ class AddRoomViewModel extends BaseViewModel<AddRoomNavigator> {
   List<RoomCategoryMD> allCategories = RoomCategoryMD.getRoomCategory();
   late RoomCategoryMD selectedRoom = allCategories[0];
 
-  validateUserInputs() {
+  validateUserInputsThenCreateRoom() {
     if (!formKey.currentState!.validate()) {
       return;
+    }else{
+      createRoom();
     }
   }
 
   createRoom() async {
-    validateUserInputs();
     navigator?.showLoadingDialog(message: "Creating New Room...");
     try {
       var result = await MyDatabase.createRoomInFireStore(RoomMD(

@@ -5,6 +5,7 @@ import 'package:rooms_chat/data/model/room_model.dart';
 import 'package:rooms_chat/generated/assets.dart';
 import 'package:rooms_chat/view/chat_thread/chat_thread_navigator.dart';
 import 'package:rooms_chat/view/chat_thread/chat_thread_viewmodel.dart';
+import 'package:rooms_chat/view/chat_thread/widgets/message_widget.dart';
 import 'package:rooms_chat/view/home/home_view.dart';
 
 class ChatThreadView extends StatefulWidget {
@@ -41,15 +42,11 @@ class _ChatThreadViewState
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, HomeView.routeName);
-              },
-            ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showPopupMenu();
+                },
                 icon: const Icon(
                   Icons.more_vert_outlined,
                   color: Colors.white,
@@ -69,31 +66,60 @@ class _ChatThreadViewState
             ),
           ),
           body: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.9,
             child: Card(
-              margin: const EdgeInsets.symmetric(vertical: 50, horizontal: 22),
+              margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
               color: Colors.white,
               elevation: 16,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        color: Colors.red,
-                        child: const Text(
-                          "TODAY",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold),
-                        ),
+                      child: StreamBuilder(
+                        stream: viewModel.getMessagesFromDB(),
+                        builder: (context, asyncSnapShot) {
+                          var data = asyncSnapShot.data?.docs
+                              .map((doc) => doc.data())
+                              .toList();
+                          if (asyncSnapShot.hasError) {
+                            return const Center(
+                              child: Text("Something went wrong"),
+                            );
+                          } else if (asyncSnapShot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (asyncSnapShot.hasData) {
+                            return ListView.separated(
+                              physics: const BouncingScrollPhysics(),
+                              reverse: true,
+                              padding: const EdgeInsets.all(4),
+                              separatorBuilder: (_, __) {
+                                return const SizedBox(
+                                  height: 8,
+                                );
+                              },
+                              itemCount: data!.length,
+                              itemBuilder: (context, index) {
+                                return MessageWidget(message: data[index]);
+                              },
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
                       ),
+                    ),
+                    const SizedBox(
+                      height: 8,
                     ),
                     Row(
                       children: [
@@ -102,7 +128,8 @@ class _ChatThreadViewState
                             controller: viewModel.messageController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey, width: 2),
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 2),
                                 borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(18),
                                 ),
@@ -115,7 +142,7 @@ class _ChatThreadViewState
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             viewModel.sendMessage();
                           },
                           child: Container(
@@ -155,6 +182,65 @@ class _ChatThreadViewState
           ),
         ),
       ),
+    );
+  }
+
+  @override
+  showPopupMenu() {
+    showMenu<String>(
+      context: context,
+      position: const RelativeRect.fromLTRB(25.0, 25.0, 0.0, 0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      items: [
+        PopupMenuItem<String>(
+          value: '1',
+          child: GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text(
+                      'Leave Room',
+                      textAlign: TextAlign.center,
+                    ),
+                    content: const Text(
+                      'Are you sure you want to leave the room?',
+                      textAlign: TextAlign.center,
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('Leave Room'),
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            HomeView.routeName,
+                            (Route<dynamic> route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: const Center(
+              child: Text(
+                'Leave Room',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+      ],
+      elevation: 8.0,
     );
   }
 }

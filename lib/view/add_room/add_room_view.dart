@@ -149,6 +149,7 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
                         TextFormField(
                           minLines: 1,
                           maxLines: 4,
+                          textInputAction: TextInputAction.done,
                           controller: viewModel.descriptionController,
                           validator: (text) {
                             if (text == null || text.trim().isEmpty) {
@@ -171,7 +172,7 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
                               elevation: 6,
                               padding: const EdgeInsets.all(14)),
                           onPressed: () {
-                            viewModel.createRoom();
+                            viewModel.validateUserInputsThenCreateRoom();
                           },
                           child: const Text(
                             "Create",
