@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rooms_chat/base/base.dart';
 import 'package:rooms_chat/data/database/my_database.dart';
-import 'package:rooms_chat/data/shared_data.dart';
+import 'package:rooms_chat/data/model/my_user.dart';
 import 'package:rooms_chat/view/Auth/sign_in/sign_in_navigator.dart';
 
 class SignInViewModel extends BaseViewModel<SignInNavigator> {
@@ -12,28 +12,26 @@ class SignInViewModel extends BaseViewModel<SignInNavigator> {
   TextEditingController passwordController = TextEditingController();
   bool obscurePassword = true;
 
-  validateUserInput() {
+  validateUserInputAndSignIn() {
     if (!formKey.currentState!.validate()) {
       return;
+    }else{
+      signIn();
     }
   }
 
   signIn() async {
-    validateUserInput();
     try {
       navigator?.showLoadingDialog();
       var credential = await authServices.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-      var retrievedUser =
+      MyUser? retrievedUser =
           await MyDatabase.getUserById(credential.user?.uid ?? '');
-      navigator?.hideLoadingDialog();
-      if (retrievedUser == null) {
-        navigator?.showMessageDialog(
-            "something went wrong with your email or password");
-      } else {
-        SharedData.user = retrievedUser;
-        navigator?.goToHome();
+      if (retrievedUser != null) {
+        navigator?.hideLoadingDialog();
+        navigator!.goToHome(retrievedUser);
       }
+      return;
     } on FirebaseAuthException catch (e) {
       navigator?.hideLoadingDialog();
       if (e.code == 'user-not-found') {
@@ -44,14 +42,6 @@ class SignInViewModel extends BaseViewModel<SignInNavigator> {
     } catch (e) {
       navigator?.showMessageDialog(
           "something went wrong, please try again later,\n${e.toString()}");
-    }
-  }
-
-  void checkLoggedInUser() async {
-    if (authServices.currentUser != null) {
-      var retrievedUser =
-          await MyDatabase.getUserById(authServices.currentUser?.uid ?? '');
-      navigator?.goToHome();
     }
   }
 }

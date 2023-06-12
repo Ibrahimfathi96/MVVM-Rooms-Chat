@@ -1,12 +1,12 @@
 class RoomMD {
   static const String collectionName = 'Rooms Collections';
-  String? id;
+  String id;
   String title;
   String description;
   String categoryID;
 
   RoomMD(
-      {this.id,
+      {this.id = '',
       required this.title,
       required this.description,
       required this.categoryID});

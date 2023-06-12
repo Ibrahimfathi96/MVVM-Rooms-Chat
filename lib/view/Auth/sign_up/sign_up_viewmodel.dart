@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:rooms_chat/base/base.dart';
 import 'package:rooms_chat/data/database/my_database.dart';
 import 'package:rooms_chat/data/model/my_user.dart';
-import 'package:rooms_chat/data/shared_data.dart';
 import 'package:rooms_chat/view/Auth/sign_up/sign_up_navigator.dart';
 
 class SignUpViewModel extends BaseViewModel<SignUpNavigator> {
@@ -14,14 +13,15 @@ class SignUpViewModel extends BaseViewModel<SignUpNavigator> {
   TextEditingController fullNameController = TextEditingController();
   bool obscurePassword = true;
 
-  validateUserInput() {
+  validateUserInputAndSignUp() {
     if (!formKey.currentState!.validate()) {
       return;
+    }else{
+      createAccount();
     }
   }
 
   createAccount() async {
-    validateUserInput();
     try {
       navigator?.showLoadingDialog();
       var credential = await authServices.createUserWithEmailAndPassword(
@@ -29,18 +29,15 @@ class SignUpViewModel extends BaseViewModel<SignUpNavigator> {
         password: passwordController.text,
       );
       MyUser newUser = MyUser(
-        id: credential.user!.uid,
+        id: credential.user?.uid ?? "",
         fullName: fullNameController.text,
         email: emailController.text,
       );
-      var insertedUser = await MyDatabase.insertUserToDB(newUser);
-      navigator?.hideLoadingDialog();
-      if(insertedUser != null){
-        SharedData.user = insertedUser;
-        navigator?.goToHome();
-      }else{
-        navigator?.showMessageDialog("something went wrong inserting to database.");
-      }
+      await MyDatabase.insertUserToDB(newUser).then((value){
+        navigator?.hideLoadingDialog();
+        navigator?.goToHome(newUser);
+        return;
+      });
     } on FirebaseAuthException catch (e) {
       navigator?.hideLoadingDialog();
       if (e.code == 'weak-password') {

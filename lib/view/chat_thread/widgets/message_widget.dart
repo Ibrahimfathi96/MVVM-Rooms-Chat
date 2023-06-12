@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rooms_chat/core/functions/date_utils.dart';
 import 'package:rooms_chat/data/model/user_message_model.dart';
-import 'package:rooms_chat/data/shared_data.dart';
+import 'package:rooms_chat/data/my_provider.dart';
 
 class SentMessage extends StatelessWidget {
   final int dateTime;
@@ -107,12 +108,13 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return message.senderId == SharedData.user!.id
-        ? SentMessage(dateTime: message.dateTime!, content: message.content!)
+    var provider = Provider.of<MyProvider>(context);
+    return provider.user!.id == message.senderId
+        ? SentMessage(dateTime: message.dateTime, content: message.content)
         : ReceivedMessage(
-            senderName: message.senderName!,
-            dateTime: message.dateTime!,
-            content: message.content!,
+            senderName: message.senderName,
+            dateTime: message.dateTime,
+            content: message.content,
           );
   }
 }

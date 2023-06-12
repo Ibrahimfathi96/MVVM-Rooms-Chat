@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rooms_chat/base/base.dart';
 import 'package:rooms_chat/core/functions/validation_utils.dart';
+import 'package:rooms_chat/data/model/my_user.dart';
+import 'package:rooms_chat/data/my_provider.dart';
 import 'package:rooms_chat/generated/assets.dart';
 import 'package:rooms_chat/view/Auth/sign_in/sign_in_navigator.dart';
 import 'package:rooms_chat/view/Auth/sign_in/sign_in_viewmodel.dart';
@@ -24,12 +26,12 @@ class _SignInViewState extends BaseState<SignInView,SignInViewModel> implements 
   }
 
   @override
-  goToHome() {
+  goToHome(MyUser myUser) {
+    MyProvider provider = Provider.of<MyProvider>(context,listen: false);
     Navigator.pushReplacementNamed(context, HomeView.routeName);
   }
   @override
   Widget build(BuildContext context) {
-    viewModel.checkLoggedInUser();
     return ChangeNotifierProvider(
       create: (context) => viewModel,
       child: Container(
@@ -144,7 +146,7 @@ class _SignInViewState extends BaseState<SignInView,SignInViewModel> implements 
                       elevation: 6,
                     ),
                     onPressed: () {
-                      viewModel.signIn();
+                      viewModel.validateUserInputAndSignIn();
                     },
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

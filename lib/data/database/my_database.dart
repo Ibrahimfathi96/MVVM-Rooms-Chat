@@ -24,8 +24,7 @@ class MyDatabase {
 
   static CollectionReference<UserMessage> getUserMessagesCollection(
       String roomId) {
-    return FirebaseFirestore.instance
-        .collection(RoomMD.collectionName)
+    return getRoomsCollection()
         .doc(roomId)
         .collection(UserMessage.collectionName)
         .withConverter<UserMessage>(
@@ -35,18 +34,16 @@ class MyDatabase {
         );
   }
 
-  static Future<MyUser?> insertUserToDB(MyUser myUser) async {
-    var collection = getUserCollection();
-    var documentRef = collection.doc(myUser.id);
-    var res = await documentRef.set(myUser);
-    return myUser;
+  static Future<void> insertUserToDB(MyUser myUser) async {
+    return getUserCollection().doc(myUser.id).set(myUser);
   }
 
   static Future<MyUser?> getUserById(String userId) async {
     var collection = getUserCollection();
     var documentRef = collection.doc(userId);
     var result = await documentRef.get();
-    return result.data();
+    var myUser = result.data();
+    return myUser;
   }
 
   static Future<void> createRoomInFireStore(RoomMD roomMD) {
@@ -62,14 +59,30 @@ class MyDatabase {
         .toList());
   }
 
-  static Future<void> insertMessageIntoFirebase(String  roomId,UserMessage message){
-    var messageDocument = getUserMessagesCollection(roomId).doc();
+  static Future<void> deleteDocumentAndCollection(RoomMD roomMD) async {
+    var roomDoc = getRoomsCollection().doc(roomMD.id);
+    var userMessagesCollection = getUserMessagesCollection(roomMD.id);
+
+    // Delete the user messages collection
+    var messages = await userMessagesCollection.get();
+    for (var messageDoc in messages.docs) {
+      await messageDoc.reference.delete();
+    }
+
+    // Delete the document
+    await roomDoc.delete();
+  }
+
+  static Future<void> addMessageToFireStore(UserMessage message) {
+    var messageDocument = getUserMessagesCollection(message.roomId).doc();
     message.messageId = messageDocument.id;
     return messageDocument.set(message);
   }
 
-  static Future<void> deleteRoom(RoomMD roomMD) {
-    var roomDoc = getRoomsCollection().doc(roomMD.id);
-    return roomDoc.delete();
+  static Stream<QuerySnapshot<UserMessage>> loadMessagesFromFireStore(
+      String roomID) {
+    return getUserMessagesCollection(roomID)
+        .orderBy('dateTime',descending: true)
+        .snapshots();
   }
 }

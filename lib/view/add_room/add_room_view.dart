@@ -84,6 +84,7 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
                           },
                           decoration: const InputDecoration(
                             labelText: "Room Name",
+                            border: OutlineInputBorder(),
                           ),
                         ),
                         const SizedBox(
@@ -146,6 +147,9 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
                             },
                           ),
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         TextFormField(
                           minLines: 1,
                           maxLines: 4,
@@ -159,6 +163,7 @@ class _AddRoomViewState extends BaseState<AddRoomView, AddRoomViewModel>
                           },
                           decoration: const InputDecoration(
                             labelText: "Room Description",
+                            border: OutlineInputBorder(),
                           ),
                         ),
                         const SizedBox(

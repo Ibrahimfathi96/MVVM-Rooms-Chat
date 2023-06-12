@@ -2,23 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rooms_chat/base/base.dart';
 import 'package:rooms_chat/data/database/my_database.dart';
+import 'package:rooms_chat/data/model/my_user.dart';
 import 'package:rooms_chat/data/model/room_model.dart';
 import 'package:rooms_chat/data/model/user_message_model.dart';
-import 'package:rooms_chat/data/shared_data.dart';
 import 'package:rooms_chat/view/chat_thread/chat_thread_navigator.dart';
 
 class ChatThreadViewModel extends BaseViewModel<ChatThreadNavigator> {
   late RoomMD roomMD;
+  late MyUser myUser;
   TextEditingController messageController = TextEditingController();
 
-  leaveRoom(){}
   Stream<QuerySnapshot<UserMessage>> getMessagesFromDB() {
-    return MyDatabase.getUserMessagesCollection(roomMD.id!)
-    //sorting messages by time
-        .orderBy(
-          'dateTime',descending: true
-        )
-        .snapshots();
+    return MyDatabase.loadMessagesFromFireStore(roomMD.id);
   }
 
   void sendMessage() {
@@ -26,11 +21,11 @@ class ChatThreadViewModel extends BaseViewModel<ChatThreadNavigator> {
     UserMessage userMessage = UserMessage(
       content: messageController.text,
       dateTime: DateTime.now().millisecondsSinceEpoch,
-      senderId: SharedData.user?.id,
-      senderName: SharedData.user?.fullName,
+      senderId: myUser.id,
+      senderName: myUser.fullName,
       roomId: roomMD.id,
     );
-    MyDatabase.insertMessageIntoFirebase(roomMD.id!, userMessage).then((value) {
+    MyDatabase.addMessageToFireStore(userMessage).then((value) {
       messageController.clear();
     }).onError(
       (error, stackTrace) {

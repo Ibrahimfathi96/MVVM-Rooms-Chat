@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rooms_chat/base/base.dart';
 import 'package:rooms_chat/core/functions/validation_utils.dart';
+import 'package:rooms_chat/data/model/my_user.dart';
+import 'package:rooms_chat/data/my_provider.dart';
 import 'package:rooms_chat/generated/assets.dart';
 import 'package:rooms_chat/view/Auth/sign_up/sign_up_navigator.dart';
 import 'package:rooms_chat/view/Auth/sign_up/sign_up_viewmodel.dart';
@@ -22,6 +24,11 @@ class _SignUpViewState extends BaseState<SignUpView, SignUpViewModel>
   @override
   SignUpViewModel initViewModel() {
     return SignUpViewModel();
+  }
+  @override
+  goToHome(MyUser myUser) {
+    MyProvider provider = Provider.of<MyProvider>(context,listen: false);
+    Navigator.pushReplacementNamed(context, HomeView.routeName);
   }
 
   @override
@@ -127,7 +134,7 @@ class _SignUpViewState extends BaseState<SignUpView, SignUpViewModel>
                       elevation: 6,
                     ),
                     onPressed: () {
-                      viewModel.createAccount();
+                      viewModel.validateUserInputAndSignUp();
                     },
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,10 +190,5 @@ class _SignUpViewState extends BaseState<SignUpView, SignUpViewModel>
         ),
       ),
     );
-  }
-
-  @override
-  goToHome() {
-    Navigator.pushReplacementNamed(context, HomeView.routeName);
   }
 }

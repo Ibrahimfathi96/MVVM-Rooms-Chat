@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rooms_chat/base/base.dart';
 import 'package:rooms_chat/data/database/my_database.dart';
 import 'package:rooms_chat/data/model/room_model.dart';
+import 'package:rooms_chat/data/model/user_message_model.dart';
+import 'package:rooms_chat/data/my_provider.dart';
 import 'package:rooms_chat/generated/assets.dart';
 import 'package:rooms_chat/view/chat_thread/chat_thread_navigator.dart';
 import 'package:rooms_chat/view/chat_thread/chat_thread_viewmodel.dart';
@@ -29,6 +32,8 @@ class _ChatThreadViewState
   @override
   Widget build(BuildContext context) {
     viewModel.roomMD = ModalRoute.of(context)?.settings.arguments as RoomMD;
+    MyProvider provider = Provider.of<MyProvider>(context);
+    viewModel.myUser = provider.user!;
     return ChangeNotifierProvider(
       create: (context) => viewModel,
       child: Container(
@@ -81,15 +86,15 @@ class _ChatThreadViewState
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
-                      child: StreamBuilder(
+                      child: StreamBuilder<QuerySnapshot<UserMessage>>(
                         stream: viewModel.getMessagesFromDB(),
                         builder: (context, asyncSnapShot) {
-                          var data = asyncSnapShot.data?.docs
+                          var messages = asyncSnapShot.data?.docs
                               .map((doc) => doc.data())
                               .toList();
                           if (asyncSnapShot.hasError) {
                             return const Center(
-                              child: Text("Something went wrong"),
+                              child: Text("Something went wrong."),
                             );
                           } else if (asyncSnapShot.connectionState ==
                               ConnectionState.waiting) {
@@ -106,9 +111,9 @@ class _ChatThreadViewState
                                   height: 8,
                                 );
                               },
-                              itemCount: data!.length,
+                              itemCount: messages?.length ?? 0,
                               itemBuilder: (context, index) {
-                                return MessageWidget(message: data[index]);
+                                return MessageWidget(message: messages![index]);
                               },
                             );
                           } else {
@@ -225,7 +230,7 @@ class _ChatThreadViewState
                           style: TextStyle(color: Colors.red),
                         ),
                         onPressed: () {
-                          MyDatabase.deleteRoom(viewModel.roomMD);
+                          MyDatabase.deleteDocumentAndCollection(viewModel.roomMD);
                           Navigator.pushNamedAndRemoveUntil(
                             context,
                             HomeView.routeName,
