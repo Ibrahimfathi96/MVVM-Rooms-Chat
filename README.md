@@ -1,16 +1,5 @@
-# rooms_chat
-
-Rooms Chat Android Application
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Rooms Chat is Mobile chat application developed by flutter framework
+Used MVVM and Clean Code
+Integrated with firebase services (Auth - Firestore)
+you can choose a categoy for the room while creating it and it will be available for all other users
+The application might have future feature not fully done.
